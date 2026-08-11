@@ -219,6 +219,14 @@
   .bundle-box .figures{ display:flex; align-items: baseline; gap: 14px; }
   .bundle-box .was{ font-family:'IBM Plex Mono', monospace; color: var(--ink-soft); text-decoration: line-through; font-size: 0.95rem; }
   .bundle-box .now{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size: 1.8rem; }
+  .bundle-box .founding{
+    display:inline-block; font-family:'IBM Plex Mono', monospace; font-size: 10.5px;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--marker);
+    border: 1px solid var(--marker); padding: 3px 8px; border-radius: var(--radius);
+    margin-top: 8px;
+  }
+  .anchor-box{ margin-top: 18px; border-color: var(--paper-line); }
+  .anchor-box .now{ font-size: 1.35rem; color: var(--ink-soft); font-weight: 600; }
 
   /* ---------- About ---------- */
   .about-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 40px; }
@@ -332,7 +340,7 @@
     <p class="sub">Two one-hour sessions for engineers vibe-coding their own products: one before you prompt, one before you launch. Get it right the first time instead of rebuilding it later.</p>
     <div class="hero-cta">
       <a href="#signup" class="btn btn-primary">Book the bundle →</a>
-      <span class="price-note">$180 for both · save $20</span>
+      <span class="price-note">$500 for both · founding rate, first 8 clients · $750 after</span>
     </div>
   </div>
 </header>
@@ -376,7 +384,7 @@
           <li>Edge cases and open questions flagged</li>
         </ul>
         <div class="who">Led by <strong>Pamela Kay</strong>: product strategy, UX, and systems specs</div>
-        <div class="price">$100 / 1 hr</div>
+        <div class="price">$450 / session</div>
       </div>
 
       <div class="dimension" aria-hidden="true">
@@ -395,7 +403,7 @@
           <li>Clear list of what to implement next</li>
         </ul>
         <div class="who">Led by <strong>Brynn Caputo</strong>: 20 years designing usable products</div>
-        <div class="price">$100 / 1 hr</div>
+        <div class="price">$450 / session</div>
       </div>
     </div>
 
@@ -404,10 +412,21 @@
         <span>Spec it. Build it. Proof it before your users have to.</span>
       </div>
       <div class="figures">
-        <span class="was mono">$200</span>
-        <span class="now">$180</span>
+        <span class="was mono">$750</span>
+        <span class="now">$500</span>
       </div>
       <a href="#signup" class="btn btn-primary">Book the bundle →</a>
+      <span class="founding mono">Founding rate · first 8 clients</span>
+    </div>
+
+    <div class="bundle-box anchor-box reveal">
+      <div class="name">Full Build Partner
+        <span>Spec, build check-ins, and two proof passes across 30 days, plus async review while you build.</span>
+      </div>
+      <div class="figures">
+        <span class="now">$2,500</span>
+      </div>
+      <a href="#signup" class="btn btn-ghost">Ask about it →</a>
     </div>
   </div>
 </section>
@@ -456,16 +475,20 @@
           <label>What are you booking? <span class="req">*</span></label>
           <div class="choice-row">
             <label class="choice">
-              <input type="radio" name="session" value="Blueprint + Proof bundle ($180)" checked>
-              <span>Bundle · $180</span>
+              <input type="radio" name="session" value="Blueprint + Proof bundle ($500 founding rate)" checked>
+              <span>Bundle · $500</span>
             </label>
             <label class="choice">
-              <input type="radio" name="session" value="Blueprint Session ($100)">
-              <span>Blueprint only · $100</span>
+              <input type="radio" name="session" value="Blueprint Session ($450)">
+              <span>Blueprint only · $450</span>
             </label>
             <label class="choice">
-              <input type="radio" name="session" value="Proof Session ($100)">
-              <span>Proof only · $100</span>
+              <input type="radio" name="session" value="Proof Session ($450)">
+              <span>Proof only · $450</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="session" value="Full Build Partner ($2,500)">
+              <span>Full Build Partner · $2,500</span>
             </label>
             <label class="choice">
               <input type="radio" name="session" value="Not sure yet">
