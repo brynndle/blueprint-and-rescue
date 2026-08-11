@@ -17,6 +17,7 @@ Then open http://localhost:8000
 
 Published with GitHub Pages from the `main` branch root.
 
-## TODO
+## Signup form
 
-- Wire the "Book the bundle" buttons to a real booking link
+Posts to Formspree (`mrpzqynp`). Submissions land in the Formspree dashboard and
+go to the notification email set there. Free tier caps at 50 submissions/month.

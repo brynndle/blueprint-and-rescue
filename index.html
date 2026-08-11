@@ -115,7 +115,43 @@
   .price-note{ font-size: 12px; color: var(--ink-soft); font-family: 'IBM Plex Mono', monospace; }
 
   /* ---------- Section shared ---------- */
-  section{ padding: 76px 0; }
+  section{ padding: 28px 0; }
+  section:first-of-type{ padding-top: 56px; }
+  section:last-of-type{ padding-bottom: 56px; }
+
+  /* White "sheet" behind each section, floating on the grid paper */
+  section > .wrap{
+    background: var(--white);
+    border: 1px solid var(--paper-line);
+    border-radius: var(--radius);
+    box-shadow: 0 1px 2px rgba(20, 33, 61, 0.05);
+    width: calc(100% - 32px);
+    padding: 56px 48px;
+  }
+  @media (max-width: 720px){
+    section > .wrap{ padding: 34px 22px; width: calc(100% - 24px); }
+  }
+
+  /* Inner cards sit on paper so they stay distinct against the white sheet */
+  section > .wrap .problem-card,
+  section > .wrap .session-card,
+  section > .wrap .bundle-box,
+  section > .wrap .form-box{
+    background: var(--paper);
+  }
+  section > .wrap .field input[type="text"],
+  section > .wrap .field input[type="email"],
+  section > .wrap .field textarea{
+    background: var(--white);
+  }
+  section > .wrap .field input:focus,
+  section > .wrap .field textarea:focus{
+    background: var(--white);
+    border-color: var(--blue);
+  }
+  section > .wrap .choice span{ background: var(--white); }
+  section > .wrap .choice input:checked + span{ background: var(--ink); }
+
   .section-head{ margin-bottom: 48px; }
   .kicker{
     font-family: 'IBM Plex Mono', monospace;
@@ -217,6 +253,79 @@
   }
   .footer-row b{ color: var(--ink); }
 
+  /* ---------- Signup form ---------- */
+  .form-box{
+    border: 1px solid var(--ink);
+    background: var(--white);
+    padding: 36px;
+  }
+  .form-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  @media (max-width: 720px){ .form-grid{ grid-template-columns: 1fr; } .form-box{ padding: 24px; } }
+  .field{ display:flex; flex-direction: column; }
+  .field.full{ grid-column: 1 / -1; }
+  .field label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+  }
+  .field label .req{ color: var(--marker); }
+  .field input[type="text"],
+  .field input[type="email"],
+  .field textarea{
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--paper-line);
+    border-radius: var(--radius);
+    padding: 11px 13px;
+    width: 100%;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .field textarea{ resize: vertical; min-height: 104px; }
+  .field input:focus, .field textarea:focus{
+    outline: none;
+    border-color: var(--blue);
+    background: var(--white);
+  }
+  .field input::placeholder, .field textarea::placeholder{ color: var(--blue-light); }
+
+  .choice-row{ display:flex; gap: 10px; flex-wrap: wrap; }
+  .choice{ position: relative; }
+  .choice input{ position:absolute; opacity: 0; width:0; height:0; }
+  .choice span{
+    display:inline-block; cursor: pointer;
+    font-family:'IBM Plex Mono', monospace; font-size: 12px;
+    border: 1px solid var(--paper-line);
+    border-radius: var(--radius);
+    padding: 9px 14px;
+    color: var(--ink-soft);
+    transition: all .15s ease;
+  }
+  .choice span:hover{ border-color: var(--blue-light); color: var(--ink); }
+  .choice input:checked + span{
+    border-color: var(--ink); background: var(--ink); color: var(--paper);
+  }
+  .choice input:focus-visible + span{ outline: 2px solid var(--marker); outline-offset: 3px; }
+
+  .form-foot{
+    grid-column: 1 / -1;
+    display:flex; align-items:center; gap: 18px; flex-wrap: wrap;
+    padding-top: 6px;
+  }
+  .form-box button{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 13px; letter-spacing: 0.03em;
+    padding: 13px 24px;
+    border: none; cursor: pointer;
+    background: var(--ink); color: var(--paper);
+    border-radius: var(--radius);
+    transition: transform .15s ease, background .15s ease;
+  }
+  .form-box button:hover{ background: var(--blue); transform: translateY(-1px); }
+  .form-note{ font-family:'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--ink-soft); }
+  .hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
   .reveal{ opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
   .reveal.in{ opacity: 1; transform: none; }
   @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
@@ -238,7 +347,7 @@
     <h1 class="display">Spec it right. <span class="mark">Then make it usable.</span></h1>
     <p class="sub">Two one-hour sessions for engineers vibe-coding their own products — one before you prompt, one after you ship. Book them together and close both gaps that AI leaves open.</p>
     <div class="hero-cta">
-      <a href="#booking" class="btn btn-primary">Book the bundle →</a>
+      <a href="#signup" class="btn btn-primary">Book the bundle →</a>
       <span class="price-note">$180 for both · save $20</span>
     </div>
   </div>
@@ -314,7 +423,7 @@
         <span class="was mono">$200</span>
         <span class="now">$180</span>
       </div>
-      <a href="#" class="btn btn-primary">Book the bundle →</a>
+      <a href="#signup" class="btn btn-primary">Book the bundle →</a>
     </div>
   </div>
 </section>
@@ -336,6 +445,59 @@
         <h4>Brynn Caputo</h4>
         <p>Experience designer based in Portland, OR, with 20 years redesigning products across healthcare, fintech, real estate tech, and nonprofits — both designer and engineer.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="signup">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">Request a session</div>
+      <h2 class="display">Tell us what you're building.</h2>
+    </div>
+
+    <div class="form-box reveal">
+      <form action="https://formspree.io/f/mrpzqynp" method="POST" class="form-grid">
+        <div class="field">
+          <label for="name">Name <span class="req">*</span></label>
+          <input type="text" id="name" name="name" required autocomplete="name">
+        </div>
+
+        <div class="field">
+          <label for="email">Email <span class="req">*</span></label>
+          <input type="email" id="email" name="email" required autocomplete="email">
+        </div>
+
+        <div class="field full">
+          <label>What are you booking? <span class="req">*</span></label>
+          <div class="choice-row">
+            <label class="choice">
+              <input type="radio" name="session" value="Blueprint + Rescue bundle — $180" checked>
+              <span>Bundle — $180</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="session" value="Blueprint Session — $100">
+              <span>Blueprint only — $100</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="session" value="UX Rescue — $100">
+              <span>Rescue only — $100</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field full">
+          <label for="project">What are you working on?</label>
+          <textarea id="project" name="project" placeholder="A sentence or two about the product, where you are with it, and what's blocking you."></textarea>
+        </div>
+
+        <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <div class="form-foot">
+          <button type="submit">Request a session →</button>
+          <span class="form-note">We'll reply within 2 business days to schedule.</span>
+        </div>
+      </form>
     </div>
   </div>
 </section>
