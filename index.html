@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blueprint + Rescue — Spec it right, then make it usable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F6F7F9;
+    --paper-line: #D8DEE9;
+    --ink: #14213D;
+    --ink-soft: #4A5A78;
+    --blue: #2C5F8A;
+    --blue-light: #7FA8C9;
+    --highlight: #F2B705;
+    --marker: #C1432B;
+    --white: #FFFFFF;
+    --radius: 2px;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
+
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    line-height: 1.5;
+    background-image:
+      linear-gradient(var(--paper-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-attachment: fixed;
+  }
+
+  .mono{ font-family: 'IBM Plex Mono', monospace; }
+  .display{ font-family: 'Space Grotesk', sans-serif; }
+
+  a{ color: inherit; }
+  :focus-visible{ outline: 2px solid var(--marker); outline-offset: 3px; }
+
+  .wrap{ max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Title block (signature element) ---------- */
+  .titleblock{
+    position: absolute;
+    top: 28px; right: 24px;
+    border: 1px solid var(--ink);
+    background: var(--white);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+  .titleblock table{ border-collapse: collapse; }
+  .titleblock td{
+    padding: 5px 10px;
+    border: 1px solid var(--paper-line);
+    white-space: nowrap;
+  }
+  .titleblock td.label{ color: var(--ink-soft); }
+  .titleblock td.value{ font-weight: 600; color: var(--ink); }
+  @media (max-width: 720px){ .titleblock{ display:none; } }
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    position: relative;
+    padding: 120px 0 80px;
+    border-bottom: 1px solid var(--paper-line);
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 22px;
+  }
+  .eyebrow::before{
+    content:""; width: 22px; height: 1px; background: var(--blue);
+  }
+  h1.display{
+    font-size: clamp(2.2rem, 5.2vw, 3.6rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    max-width: 14ch;
+    color: var(--ink);
+  }
+  h1 .mark{
+    background: linear-gradient(transparent 62%, var(--highlight) 62%);
+  }
+  .hero p.sub{
+    margin-top: 22px;
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    max-width: 46ch;
+  }
+  .hero-cta{ margin-top: 34px; display:flex; gap: 16px; flex-wrap: wrap; align-items:center; }
+
+  .btn{
+    display:inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px; letter-spacing: 0.03em;
+    padding: 13px 24px;
+    text-decoration: none;
+    border-radius: var(--radius);
+    transition: transform .15s ease, background .15s ease;
+  }
+  .btn-primary{ background: var(--ink); color: var(--paper); }
+  .btn-primary:hover{ background: var(--blue); transform: translateY(-1px); }
+  .btn-ghost{ color: var(--ink); border: 1px solid var(--ink); }
+  .btn-ghost:hover{ background: var(--white); }
+
+  .price-note{ font-size: 12px; color: var(--ink-soft); font-family: 'IBM Plex Mono', monospace; }
+
+  /* ---------- Section shared ---------- */
+  section{ padding: 76px 0; }
+  .section-head{ margin-bottom: 48px; }
+  .kicker{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 10px;
+  }
+  h2.display{
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 600;
+    max-width: 24ch;
+  }
+
+  /* ---------- Problem grid ---------- */
+  .problem-grid{
+    display:grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--paper-line);
+    border: 1px solid var(--paper-line);
+  }
+  .problem-card{ background: var(--white); padding: 32px; }
+  .problem-card .tag{
+    display:inline-block; font-family:'IBM Plex Mono', monospace; font-size: 11px;
+    color: var(--marker); border: 1px solid var(--marker); padding: 3px 8px;
+    border-radius: var(--radius); margin-bottom: 16px;
+  }
+  .problem-card h3{ font-family:'Space Grotesk', sans-serif; font-size: 1.2rem; margin-bottom: 10px; font-weight: 600; }
+  .problem-card p{ color: var(--ink-soft); font-size: 0.95rem; }
+  @media (max-width: 720px){ .problem-grid{ grid-template-columns: 1fr; } }
+
+  /* ---------- Sessions / pipeline ---------- */
+  .pipeline{
+    display:grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; gap: 20px;
+  }
+  @media (max-width: 860px){
+    .pipeline{ grid-template-columns: 1fr; }
+    .dimension{ transform: rotate(90deg); margin: 8px auto; }
+  }
+
+  .session-card{
+    background: var(--white);
+    border: 1px solid var(--ink);
+    padding: 32px;
+    display:flex; flex-direction:column;
+  }
+  .session-card .stage{
+    font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+    color: var(--blue); margin-bottom: 14px; text-transform: uppercase;
+  }
+  .session-card h3{
+    font-family:'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 600; margin-bottom: 12px;
+  }
+  .session-card p.desc{ color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 20px; }
+  .session-card ul{ list-style:none; margin-top: auto; padding-top: 16px; border-top: 1px dashed var(--paper-line); }
+  .session-card li{
+    font-family:'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--ink);
+    padding: 5px 0; display:flex; gap:8px;
+  }
+  .session-card li::before{ content:"·"; color: var(--marker); font-weight:700; }
+  .session-card .who{ margin-top: 20px; font-size: 12.5px; color: var(--ink-soft); }
+  .session-card .who strong{ color: var(--ink); }
+  .session-card .price{ font-family:'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.1rem; margin-top: 14px; }
+
+  .dimension{
+    display:flex; flex-direction: column; align-items:center; justify-content:center;
+    color: var(--blue); min-width: 90px;
+  }
+  .dimension .line{ width: 1px; flex:1; background: var(--blue-light); }
+  .dimension .arrow{ font-family:'IBM Plex Mono', monospace; font-size: 20px; }
+  .dimension .label{ font-family:'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; writing-mode: vertical-rl; color: var(--blue); margin: 8px 0; }
+
+  /* ---------- Bundle pricing row ---------- */
+  .bundle-box{
+    border: 1px solid var(--ink);
+    background: var(--white);
+    margin-top: 56px;
+    display:flex; align-items:center; justify-content: space-between;
+    padding: 30px 34px; flex-wrap: wrap; gap: 20px;
+  }
+  .bundle-box .name{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:1.2rem; }
+  .bundle-box .name span{ display:block; font-family:'IBM Plex Mono', monospace; font-weight:400; font-size:12px; color: var(--ink-soft); margin-top:4px; }
+  .bundle-box .figures{ display:flex; align-items: baseline; gap: 14px; }
+  .bundle-box .was{ font-family:'IBM Plex Mono', monospace; color: var(--ink-soft); text-decoration: line-through; font-size: 0.95rem; }
+  .bundle-box .now{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size: 1.8rem; }
+
+  /* ---------- About ---------- */
+  .about-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  @media (max-width: 720px){ .about-grid{ grid-template-columns: 1fr; } }
+  .about-card .role{ font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--blue); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .about-card h4{ font-family:'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 600; margin-bottom: 8px; }
+  .about-card p{ color: var(--ink-soft); font-size: 0.95rem; }
+
+  /* ---------- Footer title block ---------- */
+  footer{
+    border-top: 1px solid var(--paper-line);
+    padding: 40px 0 60px;
+  }
+  .footer-row{
+    display:flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-family:'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--ink-soft);
+  }
+  .footer-row b{ color: var(--ink); }
+
+  .reveal{ opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.in{ opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="titleblock mono">
+      <table>
+        <tr><td class="label">SHEET</td><td class="value">01/01</td></tr>
+        <tr><td class="label">SCALE</td><td class="value">1:1</td></tr>
+        <tr><td class="label">REV</td><td class="value">A</td></tr>
+      </table>
+    </div>
+
+    <div class="eyebrow mono">Blueprint + Rescue</div>
+    <h1 class="display">Spec it right. <span class="mark">Then make it usable.</span></h1>
+    <p class="sub">Two one-hour sessions for engineers vibe-coding their own products — one before you prompt, one after you ship. Book them together and close both gaps that AI leaves open.</p>
+    <div class="hero-cta">
+      <a href="#booking" class="btn btn-primary">Book the bundle →</a>
+      <span class="price-note">$180 for both · save $20</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">Where vibe-coded products break</div>
+      <h2 class="display">Two failure points. Same root cause.</h2>
+    </div>
+    <div class="problem-grid reveal">
+      <div class="problem-card">
+        <span class="tag mono">Before you build</span>
+        <h3>No real spec</h3>
+        <p>You start prompting with a rough idea instead of a clear scope. The AI fills the gaps with guesses — and three sessions later, you're refactoring flows that were never fully thought through.</p>
+      </div>
+      <div class="problem-card">
+        <span class="tag mono">After you build</span>
+        <h3>No UX pass</h3>
+        <p>The AI ships an interface that follows generic patterns, not your actual users. It looks done. It isn't usable. Sign-ups stall and nobody tells you why.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">The two sessions</div>
+      <h2 class="display">One hour to scope it. One hour to fix it.</h2>
+    </div>
+
+    <div class="pipeline reveal">
+      <div class="session-card">
+        <div class="stage">Stage 1 — Before you build</div>
+        <h3>The Blueprint Session</h3>
+        <p class="desc">A live working session to turn a rough idea into a spec an AI can actually build correctly the first time — before you burn prompts on the wrong thing.</p>
+        <ul>
+          <li>Scoped feature list, prioritized</li>
+          <li>User flow mapped end to end</li>
+          <li>Edge cases and open questions flagged</li>
+        </ul>
+        <div class="who">Led by <strong>your name here</strong> — product strategy, UX, and systems specing</div>
+        <div class="price">$100 / 1 hr</div>
+      </div>
+
+      <div class="dimension" aria-hidden="true">
+        <div class="line"></div>
+        <div class="label">YOU BUILD</div>
+        <div class="arrow">→</div>
+      </div>
+
+      <div class="session-card">
+        <div class="stage">Stage 2 — After you build</div>
+        <h3>The UX Rescue</h3>
+        <p class="desc">A live audit and redesign of what you shipped. Confusing flows, weak calls to action, and flat hierarchy get fixed in real time, with a punch list for the rest.</p>
+        <ul>
+          <li>Live UX audit + redesign</li>
+          <li>Flows, hierarchy, and interactions fixed together</li>
+          <li>Clear list of what to implement next</li>
+        </ul>
+        <div class="who">Led by <strong>Brynn Caputo</strong> — 20 years designing usable products</div>
+        <div class="price">$100 / 1 hr</div>
+      </div>
+    </div>
+
+    <div class="bundle-box reveal" id="booking">
+      <div class="name">Blueprint + Rescue bundle
+        <span>Book the spec session first. Build. Come back for the rescue once you have something to react to.</span>
+      </div>
+      <div class="figures">
+        <span class="was mono">$200</span>
+        <span class="now">$180</span>
+      </div>
+      <a href="#" class="btn btn-primary">Book the bundle →</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">Who you're working with</div>
+      <h2 class="display">Two specialists, one clean path.</h2>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-card">
+        <div class="role">The Blueprint Session</div>
+        <h4>Your name here</h4>
+        <p>Product and dev strategy consultant with a background in project management and business analysis. Specs out systems and user flows so builds start on solid ground instead of a guess.</p>
+      </div>
+      <div class="about-card">
+        <div class="role">The UX Rescue</div>
+        <h4>Brynn Caputo</h4>
+        <p>Experience designer based in Portland, OR, with 20 years redesigning products across healthcare, fintech, real estate tech, and nonprofits — both designer and engineer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <span>PROJECT: <b>Blueprint + Rescue</b></span>
+      <span>DRAWN BY: <b>Your Name</b> &amp; <b>Brynn Caputo</b></span>
+      <span>STATUS: <b>Booking open</b></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var els = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+</script>
+
+</body>
+</html>
