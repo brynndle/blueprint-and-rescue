@@ -19,5 +19,4 @@ Published with GitHub Pages from the `main` branch root.
 
 ## TODO
 
-- Replace the "Your name here" placeholders (Blueprint Session bio + footer)
 - Wire the "Book the bundle" buttons to a real booking link
