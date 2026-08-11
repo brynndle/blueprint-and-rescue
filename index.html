@@ -142,6 +142,7 @@
   h2.display{
     font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: 600;
+    line-height: 1;
     max-width: 24ch;
   }
 
@@ -233,6 +234,13 @@
     font-family:'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--ink-soft);
   }
   .footer-row b{ color: var(--ink); }
+  .footer-link{
+    text-decoration: none;
+    border-bottom: 1px solid var(--blue-light);
+    transition: border-color .15s ease;
+  }
+  .footer-link:hover{ border-bottom-color: var(--marker); }
+  .footer-link:hover b{ color: var(--marker); }
 
   /* ---------- Signup form ---------- */
   .form-box{
@@ -456,6 +464,10 @@
               <input type="radio" name="session" value="UX Rescue ($100)">
               <span>Rescue only · $100</span>
             </label>
+            <label class="choice">
+              <input type="radio" name="session" value="Not sure yet">
+              <span>Not sure yet</span>
+            </label>
           </div>
         </div>
 
@@ -479,7 +491,7 @@
   <div class="wrap">
     <div class="footer-row">
       <span>PROJECT: <b>Blueprint + Rescue</b></span>
-      <span>DRAWN BY: <b>Pamela Kay</b> &amp; <b>Brynn Caputo</b></span>
+      <span>Copyright <a href="https://brynncaputo.com" class="footer-link"><b>Brynn Caputo</b></a> + <b>Pamela Kay</b></span>
       <span>STATUS: <b>Booking open</b></span>
     </div>
   </div>
