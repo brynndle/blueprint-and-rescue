@@ -46,25 +46,6 @@
 
   .wrap{ max-width: 1040px; margin: 0 auto; padding: 0 24px; }
 
-  /* ---------- Title block (signature element) ---------- */
-  .titleblock{
-    position: absolute;
-    top: 28px; right: 24px;
-    border: 1px solid var(--ink);
-    background: var(--white);
-    font-size: 11px;
-    letter-spacing: 0.04em;
-  }
-  .titleblock table{ border-collapse: collapse; }
-  .titleblock td{
-    padding: 5px 10px;
-    border: 1px solid var(--paper-line);
-    white-space: nowrap;
-  }
-  .titleblock td.label{ color: var(--ink-soft); }
-  .titleblock td.value{ font-weight: 600; color: var(--ink); }
-  @media (max-width: 720px){ .titleblock{ display:none; } }
-
   /* ---------- Hero ---------- */
   header.hero{
     position: relative;
@@ -335,14 +316,6 @@
 
 <header class="hero">
   <div class="wrap">
-    <div class="titleblock mono">
-      <table>
-        <tr><td class="label">SHEET</td><td class="value">01/01</td></tr>
-        <tr><td class="label">SCALE</td><td class="value">1:1</td></tr>
-        <tr><td class="label">REV</td><td class="value">A</td></tr>
-      </table>
-    </div>
-
     <div class="eyebrow mono">Blueprint + Rescue</div>
     <h1 class="display">Spec it right. <span class="mark">Then make it usable.</span></h1>
     <p class="sub">Two one-hour sessions for engineers vibe-coding their own products — one before you prompt, one after you ship. Book them together and close both gaps that AI leaves open.</p>
