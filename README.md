@@ -3,7 +3,7 @@
 Landing page for two one-hour sessions aimed at engineers vibe-coding their own products:
 a spec session before you build, and a UX audit after you ship.
 
-Single static page — `index.html`, no build step, no dependencies.
+Single static page (`index.html`), no build step, no dependencies.
 
 ## Local preview
 
